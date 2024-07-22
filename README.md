@@ -1,1 +1,1 @@
-# TravelPlanner
+TravelPlanner is a backend application designed to streamline the process of managing travel itineraries. Built with Flask and SQLAlchemy, this application serves as the primary hub for creating, updating, and querying travel plans. Featuring JSON parsing middleware for seamless data handling and a series of dedicated routes for itinerary management, TravelPlanner ensures a robust and user-friendly interface for all your travel planning needs. Set to listen on a designated port, this server is ready to connect you to your next adventure.
