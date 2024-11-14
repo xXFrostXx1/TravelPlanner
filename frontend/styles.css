@@ -1,8 +1,8 @@
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
 }
 
 a {
@@ -11,29 +11,29 @@ a {
 }
 
 header {
-  background-color: #333;
-  color: #fff;
   padding: 20px;
   text-align: center;
+  color: #fff;
+  background-color: #333;
 }
 
 .itinerary-form {
-  background-color: #fff;
   padding: 20px;
   margin: 20px;
+  background-color: #fff;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .itinerary-form input,
 .itinerary-form select,
 .itinerary-form button {
-  display: block;
   width: 100%;
-  padding: 10px;
   margin: 10px 0;
-  border-radius: 5px;
+  padding: 10px;
   border: 1px solid #ddd;
+  border-radius: 5px;
+  display: block;
 }
 
 @media (max-width: 768px) {
@@ -48,12 +48,12 @@ header {
 }
 
 .itinerary-list li {
-  list-style: none;
   background-color: #fff;
   margin: 10px 0;
   padding: 20px;
+  list-style: none;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 @media (max-width: 768px) {
@@ -63,11 +63,11 @@ header {
 }
 
 .itinerary-details {
-  background-color: #fff;
   padding: 20px;
   margin: 20px;
+  background-color: #fff;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .itinerary-details h2,
