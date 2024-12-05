@@ -17,17 +17,14 @@ async function addItinerary(itineraryData) {
     try {
         const response = await fetch(API_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(itineraryData),
         });
-        const newItinerary = await response.json();
-        if (response.ok) {
-            displayItineraries([newItinerary], true); 
-        } else {
+        if (!response.ok) {
             throw new Error('Failed to create itinerary');
         }
+        const newItinerary = await response.json();
+        displayItineraries([newItinerary], true);
     } catch (error) {
         console.error('Error:', error);
     }
@@ -37,15 +34,13 @@ async function updateItinerary(id, updatedData) {
     try {
         const response = await fetch(`${API_URL}/${id}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedData),
         });
         if (!response.ok) {
             throw new Error('Failed to update itinerary');
         }
-        await fetchItineraries(); 
+        await fetchItineraries(); // Refresh list after update
     } catch (error) {
         console.error('Error:', error);
     }
@@ -59,32 +54,32 @@ async function deleteItinerary(id) {
         if (!response.ok) {
             throw new Error('Failed to delete itinerary');
         }
-        await fetchItineraries(); 
+        await fetchItineraries(); // Refresh list after deletion
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchItineraries(); 
-    
+    fetchItineraries(); // Initially fetch all itineraries
+
     document.getElementById('itineraryForm').addEventListener('submit', (event) => {
-        event.preventDefault();
+        event.preventDefault(); // Prevent the form from submitting in the traditional manner
         const formData = new FormData(event.target);
         const itineraryData = {}; 
         formData.forEach((value, key) => {
-            itineraryData[key] = value;
+            itineraryData[key] = value; // Convert form data into an object
         });
-        addItinerary(itineraryData);
+        addItinerary(itineraryData); // Add the new itinerary
     });
     
     document.getElementById('itinerariesContainer').addEventListener('click', (event) => {
         if (event.target.classList.contains('delete-button')) { 
-            const id = event.target.dataset.id;
+            const id = event.target.dataset.id; // Get the data-id attribute
             deleteItinerary(id);
         } else if (event.target.classList.contains('update-button')) { 
             const id = event.target.dataset.id;
-            const updatedData = {}; 
+            const updatedData = {}; // Placeholder for real update data
             updateItinerary(id, updatedData);
         }
     });
@@ -92,12 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function displayItineraries(itineraries, append = false) {
     const container = document.getElementById('itinerariesList'); 
-    if (!append) {
+    if (!append) { // Clear the container if not appending
         container.innerHTML = ''; 
     }
     itineraries.forEach((itinerary) => {
         const itineraryElement = document.createElement('div');
-        itineraryElement.textContent = itinerary.name; 
-        container.appendChild(itineraryElement);
+        itineraryElement.textContent = itinerary.name; // Set itinerary name as text content
+        container.appendChild(itineraryElement); // Add to the container
     });
 }
