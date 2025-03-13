@@ -4,12 +4,14 @@ async function fetchItineraries() {
     try {
         const response = await fetch(API_URL);
         if (!response.ok) {
-            throw new Error('Failed to fetch itineraries');
+            const message = await response.text() || 'Failed to fetch itineraries';
+            throw new Error(message);
         }
         const itineraries = await response.json();
         displayItineraries(itineraries);
     } catch (error) {
         console.error('Error:', error);
+        displayError('Failed to load itineraries. Please try again.');
     }
 }
 
@@ -21,12 +23,14 @@ async function addItinerary(itineraryData) {
             body: JSON.stringify(itineraryData),
         });
         if (!response.ok) {
-            throw new Error('Failed to create itinerary');
+            const message = await response.text() || 'Failed to create itinerary';
+            throw new Error(message);
         }
         const newItinerary = await response.json();
         displayItineraries([newItinerary], true);
     } catch (error) {
         console.error('Error:', error);
+        displayError('An error occurred while adding the itinerary. Please try again.');
     }
 }
 
@@ -38,11 +42,13 @@ async function updateItinerary(id, updatedData) {
             body: JSON.stringify(updatedData),
         });
         if (!response.ok) {
-            throw new Error('Failed to update itinerary');
+            const message = await response.text() || 'Failed to update itinerary';
+            throw new Error(message);
         }
-        await fetchItineraries(); // Refresh list after update
+        await fetchItineraries();
     } catch (error) {
         console.error('Error:', error);
+        displayError('Updating the itinerary failed. Please try again.');
     }
 }
 
@@ -52,34 +58,35 @@ async function deleteItinerary(id) {
             method: 'DELETE',
         });
         if (!response.ok) {
-            throw new Error('Failed to delete itinerary');
+            const message = await response.text() || 'Failed to delete itinerary';
+            throw new Error(message);
         }
-        await fetchItineraries(); // Refresh list after deletion
+        await fetchItineraries();
     } catch (error) {
         console.error('Error:', error);
+        displayError('An error occurred while deleting the itinerary. Please try again.');
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchItineraries(); // Initially fetch all itineraries
-
+    fetchItineraries();
     document.getElementById('itineraryForm').addEventListener('submit', (event) => {
-        event.preventDefault(); // Prevent the form from submitting in the traditional manner
+        event.preventDefault(); 
         const formData = new FormData(event.target);
         const itineraryData = {}; 
         formData.forEach((value, key) => {
-            itineraryData[key] = value; // Convert form data into an object
+            itineraryData[key] = value; 
         });
-        addItinerary(itineraryData); // Add the new itinerary
+        addItinerary(itineraryData); 
     });
     
     document.getElementById('itinerariesContainer').addEventListener('click', (event) => {
         if (event.target.classList.contains('delete-button')) { 
-            const id = event.target.dataset.id; // Get the data-id attribute
+            const id = event.target.dataset.id; 
             deleteItinerary(id);
         } else if (event.target.classList.contains('update-button')) { 
             const id = event.target.dataset.id;
-            const updatedData = {}; // Placeholder for real update data
+            const updatedData = {}; 
             updateItinerary(id, updatedData);
         }
     });
@@ -87,12 +94,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function displayItineraries(itineraries, append = false) {
     const container = document.getElementById('itinerariesList'); 
-    if (!append) { // Clear the container if not appending
+    if (!append) { 
         container.innerHTML = ''; 
     }
     itineraries.forEach((itinerary) => {
         const itineraryElement = document.createElement('div');
-        itineraryElement.textContent = itinerary.name; // Set itinerary name as text content
-        container.appendChild(itineraryElement); // Add to the container
+        itineraryElement.textContent = itinerary.name; 
+        container.appendChild(itineraryElement); 
     });
+}
+
+function displayError(message) {
+    const container = document.getElementById('errorContainer'); 
+    container.textContent = message; 
+    container.style.display = 'block'; 
 }
